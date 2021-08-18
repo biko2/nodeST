@@ -1,0 +1,180 @@
+1002130100050101FFFFFFFF80808001551003
+
+
+//==============================================================================
+//                                                                      COMMANDS
+//==============================================================================
+
+//From Totem to Node_5
+
+https://www.youtube.com/watch?v=sVv1oc14X1w
+ser.write(b'\x10\x02\x13\x01\x00\x05\x01\x01\xff\xff\xff\xff\x00\x00\x90\x01\x55\x10\x03') 19
+, 0x10, 0x02, 0x13, 0x01, 0x00, 0x05, 0x01, 0x01, 0xff, 0xff, 0xff, 0xff, 0x00, 0x00, 0x90, 0x01, 0x55, 0x10, 0x03
+
+RX -> 223 -> 10
+RX -> 251 -> 2
+RX -> 217 -> 13
+RX -> 253 -> 1
+RX -> 255 -> 0
+RX -> 245 -> 5
+RX -> 253 -> 1
+RX -> 253 -> 1
+RX -> 1 ->
+RX -> 0
+RX -> 0
+RX -> 0
+RX -> 254
+RX -> 254
+RX -> 250
+RX -> 213
+RX -> 223
+RX -> 249
+RX -> 229
+RX -> 0
+
+Entro ->10
+Entro ->2
+Entro ->13
+Entro ->1
+Entro ->0
+Entro ->5
+Entro ->1
+Entro ->1
+Entro ->FF
+Entro ->FF
+Entro ->FF
+Entro ->FF
+Entro ->0
+Entro ->0
+Entro ->90
+Entro ->1
+Entro ->55
+Entro ->10
+Entro ->3
+Entro ->0
+
+DLE | STX | LEN | SE | SO | DE | CMD | DAT | CR | DLE | ETX
+
+#define CMD_SUMALIM_ACTIVATE_LEDS		0x01
+1002130100050101FFFFFFFF80808001551003				// Inmediato, todos, todos, RGB, fixed mode
+1002130100050101FFFFFFFF00000001551003				// Inmediato, todos, todos, apagar, fixed mode
+1002180100050101FFFFFFFF808080020AF401F401551003	// Inmediato, todos, todos, RGB, blink mode, 10 veces, 500ms, 500ms 
+1002170100050101FFFFFFFF80000003D0070003551003		// Inmediato, todos, todos, RGB, rotary mode, 2 segundos, sentido horario, primer led 3
+1002170100050101FFFFFFFF80808004803E010F551003		// Inmediato, todos, todos, RGB, countdown mode, 16 segundos, sentido antihorario, primer led 15
+1002170100050101FFFFFFFF80808004803E0200551003		// Inmediato, todos, todos, RGB, countup mode, 16 segundos, sentido horario, primer led 0
+1002190100050101FFFFFFFF00100005FF00DC05F401551003	// Inmediato, todos, todos, RGB, dimmer mode, componente max, indefinido, 1500ms, 500ms
+1002190100050101FFFFFFFF00100005FF00DC05F401551003	// Inmediato, alternados, todos, RGB, dimmer mode, componente max, indefinido, 1500ms, 500ms
+1002180100050101FFFFFFFF80808006D007000200551003	// Inmediato, todos, todos, RGB, press effect mode, 2 segundos, sentido horario, primer led 2, sin sonido asociado
+1002180100050101FFFFFFFF20000006D007000204551003	// Inmediato, todos, todos, RGB, press effect mode, 2 segundos, sentido horario, primer led 2, con sonido asociado
+
+1002180100050102AAAAFFFF808080020AF401F401551003	// Sincronizado, alternos, todos, RGB, blink mode, 500ms, 500ms
+1002180100050102FFFFFFFF80808002FFF401E300551003	// Sincronizado, todos, todos, RGB, blink mode, 500ms, 227ms
+1002130100050102FFFFFFFF80808001551003 				// Sincronizado, encender
+1002130100050102FFFFFFFF00000001551003 				// Sincronizado, apagar
+1002180100050102FFFFFFFF80808006D007000200551003	// Sincronizado, todos, todos, RGB, press effect mode, 2 segundos, sentido horario, primer led 2, sin sonido asociado
+1002180100050102FFFFFFFF20000006D007000204551003	// Sincronizado, todos, todos, RGB, press effect mode, 2 segundos, sentido horario, primer led 2, con sonido asociado
+
+1002190100050102FFFFFFFF80000005010ADC05F401551003	// Sincronizado, todos, todos, RGB, dimmer mode, componente max, 10 veces, 1500ms, 500ms
+
+
+1002180100050105FFFFFFFF8080800202F401FA00551003	// Evento boton, todos, todos, RGB, blink mode, 2 veces, 500ms, 250ms
+1002170100050105FFFFFFFF80808003E8030003551003		// Evento boton, todos, todos, RGB, rotary mode, 1 segundo, sentido horario, primer led 3
+1002190100050105FFFFFFFF00020005FF02F401F401551003	// Evento boton, todos, todos, RGB, dimmer mode, componente max, 2, 500ms, 500ms
+1002190100050105FFFFFFFF0020000580012003C800551003	// Evento boton, todos, todos, RGB, dimmer mode, componente max, 1, 800ms, 500ms
+1002180100050105FFFFFFFF00800006D007000200551003	// Evento boton, todos, todos, RGB, press effect mode, 2 segundos, sentido horario, primer led 2, sin sonido asociado
+1002180100050105FFFFFFFF00200006D007000204551003	// Evento boton, todos, todos, RGB, press effect mode, 2 segundos, sentido horario, primer led 2, con sonido asociado
+
+
+#define CMD_SUMALIM_ACTIVATE_BUZZER		0x02
+10020F010005020001000000551003			// No actuar, tipo 1, parar sonido
+10020F01000502010100E803551003			// Inmediato, tipo 1, indefinido, con retardo 1 segundo
+10020F010005020101000005551003   		// Inmediato, tipo 1, 5 repeticiones, sin retardo
+10020F010005020101010000551003   		// Inmediato, tipo 1, 1 repeticiones
+10020F010005020102010000551003   		// Inmediato, tipo 2, 1 repeticiones
+10020F0100050201030AE803551003   		// Inmediato, tipo 3, 10 repeticiones con retardo 1 segundo
+10020F010005020104010000551003   		// Inmediato, tipo 4, 1 repeticiones
+10020F010005020105010000551003   		// Inmediato, tipo 5, 1 repeticiones
+10020F010005020106010000551003   		// Inmediato, tipo 6, 1 repeticiones
+
+10020F010005020201010000551003   		// Sincronizado, tipo 1, 1 repeticiones
+10020F010005020202010000551003   		// Sincronizado, tipo 2, 1 repeticiones
+10020F0100050202030AE803551003			// Sincronizado, tipo 3, 10 repeticiones con retardo 1 segundo
+10020F0100050202030AD007551003   		// Sincronizado, tipo 3, 10 repeticiones con retardo 2 segundos
+10020F010005020204010000551003   		// Sincronizado, tipo 4, 1 repeticiones
+
+10020F010005020501010000551003   		// Evento boton, tipo 1, 1 repeticiones
+
+
+#define CMD_SUMALIM_CONFIGURE_PIR		0x03
+10020D0100050301E803551003     		// Activar, 1 segundo
+
+
+#define CMD_SUMALIM_SYNCHRONIZE			0x04
+10020A0100FF04551003
+
+
+#define CMD_SUMALIM_RESET       		0x05
+10020A01000505551003
+
+
+#define CMD_SUMALIM_CONFIGURE_BUTTONS		0x08
+10021101000508FFFFFFFF01E803551003	// Todos, activar, 1 segundo
+1002110100FF08FFFFFFFF01C800551003	// Todos, activar, 200 ms - Broadcast
+
+
+#define CMD_SUMALIM_POLLING_STATUS		0x0A
+10020E0100FF0A00001910551003
+
+
+ROJO - JUGADOR 1 - 255,0,0
+1002130100050101FFFFFFFFff000001551003
+
+VERDE - JUGADOR 2 - 210,255,0
+1002130100050101FFFFFFFFb4ff0001551003
+
+AZUL - JUGADOR 3 - 0,174,255
+1002130100050101FFFFFFFF005aff01551003
+
+MORADO - JUGADOR 4 - 170,79,255
+1002130100050101FFFFFFFFba00ff01551003
+
+NARANJA - JUGADOR 5 - 255,120,0
+1002130100050101FFFFFFFFff360001551003
+
+AMARILLO - JUGADOR 6 - 255,234,0
+1002130100050101FFFFFFFFff780001551003
+
+ROSA - JUGADOR 7 - 255,0,219
+1002130100050101FFFFFFFFff007e01551003
+
+TURQUESA - JUGADOR 8 - 0,255,224
+1002130100050101FFFFFFFF00ff7801551003
+
+
+
+ROJO
+ff0000
+
+VERDE
+b4ff00
+
+AZUL
+005aff
+
+MORADO
+ba00ff
+
+NARANJA
+ff3600
+
+AMARILLO
+ff7800
+
+ROSA
+ff007e
+
+TURQUESA
+00ff78
+00ff58 NUEVO
+
+
