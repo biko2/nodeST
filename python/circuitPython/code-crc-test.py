@@ -53,3 +53,4 @@ while True:
     print(data)  # this is a bytearray type
 
 
+s
