@@ -38,23 +38,15 @@ __repo__ = "https://github.com/oierbravo/CircuitPython_Org_sumalim-commands.git"
 
 
 from sumalinLib import CommandFromInput,createCommand,Commands,LedMoment,Source,Destination,LedEffect
-print(f"Commands: {list(Commands)}")
-print("1002130100050101FFFFFFFF80808001551003")
-print("--------[modo lista:")
-print(list(bytearray.fromhex("1002130100050101FFFFFFFF80808001551003")))
-print("--------[string:")
-print(bytearray.fromhex("1002130100050101FFFFFFFF80808001551003"))
-print("--------[parsedInput:")
-print(CommandFromInput("1002130100050101FFFFFFFF80808001551003"))
-print("-------[createCommand.led:")
-#command = createCommand.led(1,Source.TOTEM,Destination.BROADCAST,LedMoment.INSTANT,1, 255, 255, 255, 255, 1, [85])
-command = createCommand.led(1,0,5,1, 0, 128, 255, 255, 128, 0, 0 ,1)
-print(command)
-print("-------[bytearray.fromhex(createCommand.led):")
-#print(bytearray.fromhex(command))
-print("-------[CommandFromInput(createCommand.led):")
-print(CommandFromInput(command))
 
+#command = createCommand.led(1,0,5,1, 0, 128, 255, 255, 128, 0, 0 ,1)
+#print(command)
+#print("-------[bytearray.fromhex(createCommand.led):")
+#print(bytearray.fromhex(command))
+#print("-------[CommandFromInput(createCommand.led):")
+#print(CommandFromInput(command))
+
+print(bytearray.fromhex("1002170100050101FFFFFFFF80000003D0070003551003"))
 print(list(bytearray.fromhex("1002170100050101FFFFFFFF80000003D0070003551003")))
 print(CommandFromInput("1002170100050101FFFFFFFF80000003D0070003551003"))
 #led(sec,source,destination,moment,leds1, leds2, miniLeds1, miniLeds2, r, g, b, effect, extras = []):
