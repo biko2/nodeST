@@ -53,7 +53,9 @@ Entro ->10
 Entro ->3
 Entro ->0
 
-DLE | STX | LEN | SE | SO | DE | CMD | DAT | CR | DLE | ETX
+DLE | STX | LEN | SE | SO | DE | CMD | DAT                       | CR | DLE | ETX
+
+10     02    13    01  00   05    01    01 FF FF FF FF 80 80 80 01 55    10    03
 
 #define CMD_SUMALIM_ACTIVATE_LEDS		0x01
 1002130100050101FFFFFFFF80808001551003				// Inmediato, todos, todos, RGB, fixed mode
