@@ -31,8 +31,8 @@ while True:
         packetInitOrEnd = False
     
     if frameEnded:
-        #print(buffer)
-        print(CommandFromInput(buffer))
+        print(buffer)
+        #print(CommandFromInput(buffer))
         frameStarted = False
         frameEnded = False
         buffer = b''
