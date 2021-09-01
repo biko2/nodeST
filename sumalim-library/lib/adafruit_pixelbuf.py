@@ -132,7 +132,9 @@ class PixelBuf:  # pylint: disable=too-many-instance-attributes
             dotstar_mode = True
         else:
             byteorder = (r, g, b)
-
+    
+        print(f"byteorder: {byteorder}")
+        print(f"has_white: {has_white}")
         return bpp, byteorder, has_white, dotstar_mode
 
     @property

@@ -17,11 +17,13 @@ except ImportError:
     except ImportError:
         import adafruit_pypixelbuf as adafruit_pixelbuf
 
+print(adafruit_pixelbuf.PixelBuf)
 print("Sumalib start")
 class Sumalib(adafruit_pixelbuf.PixelBuf):
     def __init__(self):
         super().__init__(
-            16, brightness=1.0, byteorder="RGB", auto_write=False
+            ##16, brightness=1.0, byteorder="RGB", auto_write=False
+            16,byteorder="RGB",
         )
     def deinit(self):
         """Blank out the NeoPixels and release the pin."""
@@ -52,20 +54,27 @@ class Sumalib(adafruit_pixelbuf.PixelBuf):
         Use ``show`` instead. It matches Micro:Bit and Arduino APIs."""
         #self.show()
         print('write')
-    def _parse_color(self,value):
-        super._parse_color(self,value)
+
     def _transmit(self, buffer):
         #neopixel_write(self.pin, buffer)
         print("transmit")
-        r, g, b,  = self._parse_color(self[0])
-        print("data:")
-        print(r)
+        ##r, g, b  = self._parse_color(self[0])
+        
+        
+        
         #print(f"red: {r}")
-        #uart.write(CreateCommand.led(1,r,g,b))
+        for led_index in range(16):
+            r, g, b = self[led_index]
+            uart.write(CreateCommand.led(led_index,r,g,b))
+        """r, g, b = self[0]
+        uart.write(CreateCommand.led(2,r,g,b))"""
 
 class CreateCommand():
     @staticmethod
     def led(ledIndex,r,g,b):
+        #print(ledIndex)
+        led = pow(2,ledIndex)
+        #print(f"led: {led}")
         output = bytearray()
         output.append(16)
         output.append(2)
@@ -78,8 +87,12 @@ class CreateCommand():
         #DATA
         output.append(1) #moment inmediate
 
-        output.append(ledIndex) #todo: cambiar por ledindex
-        output.append(0) #todo: cambiar por ledindex
+        #output.append(led) #todo: cambiar por ledindex
+        led_c, led_f= divmod(led, 256)
+        
+        output.append(led_f)
+        output.append(led_c)
+        #output.append(0) #todo: cambiar por ledindex
         output.append(255)
         output.append(255)
         output.append(r)
