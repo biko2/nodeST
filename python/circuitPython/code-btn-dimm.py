@@ -18,29 +18,26 @@ pinEnvio.value = True
 #24 13 F1 FC 85 F1 F1 FF FE FF 32 FC F1 D5 38 D FC
 
 def playNote():
-    led.value = True
-    #Color Azul
-    uart.write(b'\x10\x02\x13\x01\x00\x05\x01\x01\xff\xff\xff\xff\x00\x00\x00\x01\x55\x10\x03')
-    time.sleep(2.050)
 
-    led.value = True
-    #Color Azul
-    uart.write(b'\x10\x02\x13\x01\x00\x05\x01\x01\xff\xff\xff\xff\x00\x00\x90\x01\x55\x10\x03')
-    time.sleep(2.050)
 
-    led.value = True
-    #Color Azul
-    uart.write(b'\x10\x02\x13\x01\x00\x05\x01\x01\xff\xff\xff\xff\x00\x00\x00\x01\x55\x10\x03')
-    time.sleep(2.050)
-    for i in range(255):
-        uart.write(createCommand.dimmer(0,32,0,128,0,0,0,1000,1000,i)) # 184 It works
-        time.sleep(2.050)
-
+    led.value = False
+    
+    uart.write(createCommand.configButtons())
+    time.sleep(1)
     #uart.write(createCommand.countdown(0,255,0,128,0,5000,1,1))
-    
-    #uart.write(bytearray(b'\x10\x02\x17\x01\x00\x05\x01\x01\xff\xff\xff\xff\x80\x00\x00\x03\xd0\x07\x00\x03U\x10\x03'))
-    
+    uart.write(createCommand.dimmer(1,255,255,0,0,128,0,0,1000,1000))
+    time.sleep(1)
+    uart.write(createCommand.dimmer(5,255,255,128,0,0,0,0,1000,1000))
 
+    #uart.write(bytearray(b'\x10\x02\x17\x01\x00\x05\x01\x01\xff\xff\xff\xff\x80\x00\x00\x03\xd0\x07\x00\x03U\x10\x03'))
+    time.sleep(6.050)
+    
+    uart.write(createCommand.pollingStatus())
+    time.sleep(5)
+
+    #uart.write(createCommand.rotary(255,255,0,128,0,1000,0,3))
+    #uart.write(bytearray(b'\x10\x02\x17\x01\x00\x05\x01\x01\xff\xff\xff\xff\x80\x00\x00\x03\xd0\x07\x00\x03U\x10\x03'))
+    #time.sleep(5.050)
 
 
 
@@ -53,4 +50,3 @@ while True:
     print(data)  # this is a bytearray type
 
 
-s
