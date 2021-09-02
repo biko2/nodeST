@@ -1,5 +1,5 @@
 import board
-
+import time
 import digitalio
 import busio
 
@@ -41,6 +41,7 @@ class Sumalib(adafruit_pixelbuf.PixelBuf):
 
     def __repr__(self):
         return "[" + ", ".join([str(x) for x in self]) + "]"
+
     @property
     def n(self):
         """
@@ -57,17 +58,17 @@ class Sumalib(adafruit_pixelbuf.PixelBuf):
 
     def _transmit(self, buffer):
         #neopixel_write(self.pin, buffer)
-        print("transmit")
+        #print("transmit")
         ##r, g, b  = self._parse_color(self[0])
-        
-        
-        
         #print(f"red: {r}")
+        numero = 0
+        
         for led_index in range(16):
+            numero = numero +1
+            #print("movida" + str(numero) )
             r, g, b = self[led_index]
             uart.write(CreateCommand.led(led_index,r,g,b))
-        """r, g, b = self[0]
-        uart.write(CreateCommand.led(2,r,g,b))"""
+            time.sleep(0.005)
 
 class CreateCommand():
     @staticmethod
@@ -89,7 +90,7 @@ class CreateCommand():
 
         #output.append(led) #todo: cambiar por ledindex
         led_c, led_f= divmod(led, 256)
-        
+
         output.append(led_f)
         output.append(led_c)
         #output.append(0) #todo: cambiar por ledindex
