@@ -1,10 +1,11 @@
 # To do:
 - Añadir efectos
-  - blink
-  - rotary (afecta a todos los leds)
-  - countDown
-  - dimmer
-- Sonido
-- Moment
-- Debug mode
-- Custom fill
+  - [x] blink
+  - [x] rotary (afecta a todos los leds)
+  - [x] countDown
+  - [x] dimmer
+  - [ ] pulse
+- [ ] Sonido
+- [ ] Moment
+- [ ] Debug mode
+- [ ] Custom fill

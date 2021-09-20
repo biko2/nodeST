@@ -1,5 +1,7 @@
 
 from sumalib import Sumalib
+import sumalibColors
+
 import time
 
 DELAY = 1
