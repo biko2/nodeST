@@ -82,33 +82,33 @@ class Effects():
     :param int numBlinks: Times to blink.
     :param int timeIn: time in millisecond for led on.
     :param int timeOut: time in millisecond for led off.
-    :param int moment: 1 for inmediatly, 4 for after button push.
+    :param bool button: True for activate after button press
     """
     @staticmethod
-    def blink(numLeds,color,numBlinks, timeIn, timeOut,moment = 1):
-        uart.write(CreateCommand.blink(numLeds,color,numBlinks, timeIn, timeOut,moment))
+    def blink(numLeds,color,numBlinks, timeIn, timeOut,button = False):
+        uart.write(CreateCommand.blink(numLeds,color,numBlinks, timeIn, timeOut,button))
     """
     Rotary effect.
     :param color: color value list in (r, g ,b) format.
     :param int time: time in millisecond to make a whole circle
     :param int direction: 1 for clockwise, 0 counterclockwise
     :param int first: first led to light
-    :param int moment: 1 for inmediatly, 4 for after button push.
+    :param bool button: True for activate after button press
     """
     @staticmethod
-    def rotary(color, time, direction = 1, first = 0,moment = 1):
-        uart.write(CreateCommand.rotary(color,time,direction, first,moment))
+    def rotary(color, time, direction = 1, first = 0,button = False):
+        uart.write(CreateCommand.rotary(color,time,direction, first,button))
     """
     Countdown effect.
     :param color: color value list in (r, g ,b) format.
     :param int time: time in millisecond to make a whole circle
     :param int direction: 1 for clockwise, 0 counterclockwise
     :param int first: first led to light
-    :param int moment: 1 for inmediatly, 4 for after button push.
+    :param bool button: True for activate after button press
     """
     @staticmethod
-    def countdown(color, time, direction = 1, first = 0,moment = 1):
-        uart.write(CreateCommand.countdown(color,time,direction, first,moment))
+    def countdown(color, time, direction = 1, first = 0,button = False):
+        uart.write(CreateCommand.countdown(color,time,direction, first,button))
     """
     Dimmer effect.
     :param color: color value list in (r, g ,b) format.
@@ -117,25 +117,24 @@ class Effects():
     :param int timeDown: time in millisecond for led fade out.
     :param ciclo: 0
     :param component: 0
-    :param int moment: 1 for inmediatly, 4 for after button push.
+    :param bool button: True for activate after button press
     """
     @staticmethod
-    def dimmer(color,timeUp, timeDown, ciclo = 0, component = 0,moment = 1):
-        uart.write(CreateCommand.dimmer(color,timeUp, timeDown,ciclo, component,moment))
+    def dimmer(color,timeUp, timeDown, ciclo = 0, component = 0,button = False):
+        uart.write(CreateCommand.dimmer(color,timeUp, timeDown,ciclo, component,button))
     @staticmethod
-    def pulse(color,time, direction = 0, first = 0, sound = 0,moment = 1):
-        pulse = CreateCommand.pulse(color,time, direction, first, sound,moment)
-        uart.write(CreateCommand.pulse(color,time, direction, first, sound,moment))
+    def pulse(color,time, direction = 0, first = 0, sound = 0,button = False):
+        uart.write(CreateCommand.pulse(color,time, direction, first, sound,button))
     """
     Buzzer effect.
     :param sound: index of the sound.
     :param int times: number of times to repeat. 0 for loop
     :param int delay: time in millisecond for delayed play.
-    :param int moment: 1 for inmediatly, 4 for after button push.
+    :param bool button: True for activate after button press
     """
     @staticmethod
-    def buzzer(sound, times, delay,moment = 1):
-        uart.write(CreateCommand.buzzer(sound, times, delay,moment))
+    def buzzer(sound, times, delay,button = False):
+        uart.write(CreateCommand.buzzer(sound, times, delay,button))
     
 
 
@@ -185,11 +184,11 @@ class CreateCommand():
 
         return output
     @staticmethod
-    def blink(numLeds,color,numBlinks, timeIn, timeOut,moment = 1):
+    def blink(numLeds,color,numBlinks, timeIn, timeOut,button = False):
         leds = 0
         for i in range(numLeds):
             leds += pow(2,i)
-        output = CreateCommand.initCommandLeds(leds,24,color,moment=moment)
+        output = CreateCommand.initCommandLeds(leds,24,color,button=button)
 
         output.append(2) # Blink effect
         output.append(numBlinks)
@@ -206,9 +205,9 @@ class CreateCommand():
 
         return CreateCommand.endCommand(output)
     @staticmethod
-    def rotary(color, time, direction = 1, first = 0,moment = 1):
+    def rotary(color, time, direction = 1, first = 0,button = False):
 
-        output = CreateCommand.initCommand(23,color,moment=moment)
+        output = CreateCommand.initCommand(23,color,button=button)
 
         output.append(3) # rotary effect
         time_c, time_f= divmod(time, 256)
@@ -220,8 +219,8 @@ class CreateCommand():
         output.append(first)
         return CreateCommand.endCommand(output)
     @staticmethod
-    def countdown(color, time, direction = 1, first = 0,moment = 1):
-        output = CreateCommand.initCommand(23,color,moment=moment)
+    def countdown(color, time, direction = 1, first = 0,button = False):
+        output = CreateCommand.initCommand(23,color,button=button)
 
         output.append(4) # countdown
         time_c, time_f= divmod(time, 256)
@@ -233,8 +232,8 @@ class CreateCommand():
         output.append(first)
         return CreateCommand.endCommand(output)
     @staticmethod
-    def dimmer(color,timeUp, timeDown, ciclo = 0, component = 0,moment = 1):
-        output = CreateCommand.initCommand(25,color,moment=moment)
+    def dimmer(color,timeUp, timeDown, ciclo = 0, component = 0,button = False):
+        output = CreateCommand.initCommand(25,color,button=button)
 
         output.append(5) # dimmer
 
@@ -253,9 +252,9 @@ class CreateCommand():
 
         return CreateCommand.endCommand(output)
     @staticmethod
-    def pulse(color,time, direction = 0, first = 1, sound = 1,moment = 1):
+    def pulse(color,time, direction = 0, first = 1, sound = 1,button = False):
 
-        output = CreateCommand.initCommand(24,color,moment = moment)
+        output = CreateCommand.initCommand(24,color,button = button)
 
         output.append(6) # pulse
 
@@ -270,9 +269,9 @@ class CreateCommand():
 
         return CreateCommand.endCommand(output)
     @staticmethod
-    def buzzer(sound, times, delay,moment = 1):
+    def buzzer(sound, times, delay,button = False):
 
-        output = CreateCommand.initBuzzerCommand(moment= moment)
+        output = CreateCommand.initBuzzerCommand(button= button)
 
         output.append(sound) # countdown
 
@@ -285,7 +284,7 @@ class CreateCommand():
 
         return CreateCommand.endCommand(output)
     @staticmethod
-    def initBuzzerCommand(so = 0, de = 5, moment = 1):
+    def initBuzzerCommand(so = 0, de = 5, button = False):
         output = bytearray()
         output.append(16)
         output.append(2)
@@ -296,11 +295,14 @@ class CreateCommand():
         output.append(de) # DE
         output.append(2) #buzzer command
         #DATA
-        output.append(moment) #moment inmediate
+        if button is True:
+            output.append(4)
+        else:
+            output.append(1)
 
         return output
     @staticmethod
-    def initCommand(length,color,command = 1,so = 0, de = 5, moment = 1):
+    def initCommand(length,color,command = 1,so = 0, de = 5, button = False):
 
         output = bytearray()
         output.append(16)
@@ -312,7 +314,10 @@ class CreateCommand():
         output.append(de) # DE
         output.append(command) #led command
         #DATA
-        output.append(moment) #moment inmediate
+        if button is True:
+            output.append(4)
+        else:
+            output.append(1)
 
         output.append(255)
         output.append(255)
@@ -326,7 +331,7 @@ class CreateCommand():
 
         return output
     @staticmethod
-    def initCommandLeds(leds,length,color,command = 1,so = 0, de = 5, moment = 1):
+    def initCommandLeds(leds,length,color,command = 1,so = 0, de = 5, button = False):
         output = bytearray()
         output.append(16)
         output.append(2)
@@ -337,7 +342,10 @@ class CreateCommand():
         output.append(de) # DE
         output.append(command) #led command
         #DATA
-        output.append(moment) #moment inmediate
+        if button is True:
+            output.append(4)
+        else:
+            output.append(1)
         led_c, led_f= divmod(leds, 256)
 
         output.append(led_f)
