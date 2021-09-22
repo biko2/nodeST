@@ -58,7 +58,14 @@ class Sumalib(adafruit_pixelbuf.PixelBuf):
 
         Use ``show`` instead. It matches Micro:Bit and Arduino APIs."""
         #self.show()
-
+    def fill(self,color):
+        for led_index in range(16):
+            self[led_index] = color
+        uart.write(CreateCommand.fill(color))
+    def clear(self):
+        for led_index in range(16):
+            self[led_index] = (0,0,0)
+        uart.write(CreateCommand.clear())
     def _transmit(self, buffer):
         numero = 0
 
@@ -68,31 +75,83 @@ class Sumalib(adafruit_pixelbuf.PixelBuf):
             uart.write(CreateCommand.led(led_index,r,g,b))
             time.sleep(0.005)
 class Effects():
+    """
+    Blink effect.
+    :param int numLeds: number of leds, between 1 and 16
+    :param color: color value list in (r, g ,b) format.
+    :param int numBlinks: Times to blink.
+    :param int timeIn: time in millisecond for led on.
+    :param int timeOut: time in millisecond for led off.
+    :param int moment: 1 for inmediatly, 4 for after button push.
+    """
     @staticmethod
     def blink(numLeds,color,numBlinks, timeIn, timeOut,moment = 1):
         uart.write(CreateCommand.blink(numLeds,color,numBlinks, timeIn, timeOut,moment))
+    """
+    Rotary effect.
+    :param color: color value list in (r, g ,b) format.
+    :param int time: time in millisecond to make a whole circle
+    :param int direction: 1 for clockwise, 0 counterclockwise
+    :param int first: first led to light
+    :param int moment: 1 for inmediatly, 4 for after button push.
+    """
     @staticmethod
     def rotary(color, time, direction = 1, first = 0,moment = 1):
         uart.write(CreateCommand.rotary(color,time,direction, first,moment))
+    """
+    Countdown effect.
+    :param color: color value list in (r, g ,b) format.
+    :param int time: time in millisecond to make a whole circle
+    :param int direction: 1 for clockwise, 0 counterclockwise
+    :param int first: first led to light
+    :param int moment: 1 for inmediatly, 4 for after button push.
+    """
     @staticmethod
     def countdown(color, time, direction = 1, first = 0,moment = 1):
         uart.write(CreateCommand.countdown(color,time,direction, first,moment))
+    """
+    Dimmer effect.
+    :param color: color value list in (r, g ,b) format.
+    :param int time: time in millisecond to make a whole circle
+    :param int timeUp: time in millisecond for led fade in.
+    :param int timeDown: time in millisecond for led fade out.
+    :param ciclo: 0
+    :param component: 0
+    :param int moment: 1 for inmediatly, 4 for after button push.
+    """
     @staticmethod
     def dimmer(color,timeUp, timeDown, ciclo = 0, component = 0,moment = 1):
         uart.write(CreateCommand.dimmer(color,timeUp, timeDown,ciclo, component,moment))
     @staticmethod
     def pulse(color,time, direction = 0, first = 0, sound = 0,moment = 1):
         pulse = CreateCommand.pulse(color,time, direction, first, sound,moment)
-        print(pulse)
         uart.write(CreateCommand.pulse(color,time, direction, first, sound,moment))
+    """
+    Buzzer effect.
+    :param sound: index of the sound.
+    :param int times: number of times to repeat. 0 for loop
+    :param int delay: time in millisecond for delayed play.
+    :param int moment: 1 for inmediatly, 4 for after button push.
+    """
     @staticmethod
     def buzzer(sound, times, delay,moment = 1):
         uart.write(CreateCommand.buzzer(sound, times, delay,moment))
     
 
+
 class CreateCommand():
 
     @staticmethod
+    def fill(color):
+        output = CreateCommand.initCommand(19,color)
+        output.append(1) #led
+        return CreateCommand.endCommand(output)
+    @staticmethod
+    def clear():
+        output = CreateCommand.initCommand(19,(0,0,0))
+        output.append(1) #led
+        return CreateCommand.endCommand(output)
+
     def led(ledIndex,r,g,b):
         led = pow(2,ledIndex)
         output = bytearray()
@@ -148,8 +207,8 @@ class CreateCommand():
         return CreateCommand.endCommand(output)
     @staticmethod
     def rotary(color, time, direction = 1, first = 0,moment = 1):
-        leds = pow(2,15)
-        output = CreateCommand.initCommand(leds,23,color,moment=moment)
+
+        output = CreateCommand.initCommand(23,color,moment=moment)
 
         output.append(3) # rotary effect
         time_c, time_f= divmod(time, 256)
@@ -162,8 +221,7 @@ class CreateCommand():
         return CreateCommand.endCommand(output)
     @staticmethod
     def countdown(color, time, direction = 1, first = 0,moment = 1):
-        leds = pow(2,15)
-        output = CreateCommand.initCommand(leds,23,color,moment=moment)
+        output = CreateCommand.initCommand(23,color,moment=moment)
 
         output.append(4) # countdown
         time_c, time_f= divmod(time, 256)
@@ -176,9 +234,7 @@ class CreateCommand():
         return CreateCommand.endCommand(output)
     @staticmethod
     def dimmer(color,timeUp, timeDown, ciclo = 0, component = 0,moment = 1):
-        leds = pow(2,15)
-
-        output = CreateCommand.initCommand(leds,25,color,moment=moment)
+        output = CreateCommand.initCommand(25,color,moment=moment)
 
         output.append(5) # dimmer
 
@@ -198,10 +254,8 @@ class CreateCommand():
         return CreateCommand.endCommand(output)
     @staticmethod
     def pulse(color,time, direction = 0, first = 1, sound = 1,moment = 1):
-    
-        leds = pow(2,15)
 
-        output = CreateCommand.initCommand(leds,22,color,moment = moment)
+        output = CreateCommand.initCommand(24,color,moment = moment)
 
         output.append(6) # pulse
 
@@ -209,10 +263,10 @@ class CreateCommand():
 
         output.append(time_f)
         output.append(time_c)
-        
-        output.append(direction)
-        output.append(first)
-        output.append(sound)
+
+        output.append(1)
+        output.append(1)
+        output.append(1)
 
         return CreateCommand.endCommand(output)
     @staticmethod
@@ -243,10 +297,10 @@ class CreateCommand():
         output.append(2) #buzzer command
         #DATA
         output.append(moment) #moment inmediate
-        
+
         return output
     @staticmethod
-    def initCommand(leds,length,color,command = 1,so = 0, de = 5, moment = 1):
+    def initCommand(length,color,command = 1,so = 0, de = 5, moment = 1):
 
         output = bytearray()
         output.append(16)
@@ -259,10 +313,7 @@ class CreateCommand():
         output.append(command) #led command
         #DATA
         output.append(moment) #moment inmediate
-        led_c, led_f= divmod(leds, 256)
 
-        #output.append(led_f)
-        #output.append(led_c)
         output.append(255)
         output.append(255)
         #output.append(0) #todo: cambiar por ledindex
@@ -319,19 +370,19 @@ class CreateCommand():
         output.append(0) # SO
         output.append(5) # DE
         output.append(8) #polling command
-        
+
         output.append(255)
         output.append(255)
         output.append(255)
         output.append(255)
-        
+
         output.append(1)
-        
+
         time_c, time_f= divmod(200, 256)
 
         output.append(time_f)
         output.append(time_c)
-        
+
         output.append(CreateCommand.calculateCrc(output[2:])) # CRC
         output.append(16)
         output.append(3)

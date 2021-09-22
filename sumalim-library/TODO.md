@@ -5,7 +5,7 @@
   - [x] countDown
   - [x] dimmer
   - [ ] pulse
-- [ ] Sonido
-- [ ] Moment
+- [x] Sonido
+- [x] Moment
 - [ ] Debug mode
 - [ ] Custom fill
