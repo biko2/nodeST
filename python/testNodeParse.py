@@ -38,6 +38,7 @@ time.sleep(1)
 Effects.dimmer(GREEN,1000,1000,0, button=True)
 print("Read mode")
 Effects.enableButtons()
+#Effects.disableButtons()
 Effects.sync()
 time.sleep(0.01)
 Effects.poll()
@@ -47,7 +48,7 @@ buffer = b''
 
 
 initTime = time.time()
-threshold = 10
+threshold = 1
 while True:
     
     while(leds.uart.inWaiting()):
@@ -62,9 +63,12 @@ while True:
 
         time.sleep(0.01)
     if(time.time() -  initTime > threshold):
-        Effects.sync()
-        time.sleep(0.01)
+        #Effects.sync()
+        #time.sleep(0.01)
+        #leds.uart.reset_input_buffer()
+
         Effects.poll()
+        
         #time.sleep(0.01)
         #Effects.buzzer(1,3,0)
         initTime = time.time()

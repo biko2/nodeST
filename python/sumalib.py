@@ -149,6 +149,9 @@ class Effects():
     @staticmethod
     def enableButtons():
         uart.write(CreateCommand.enableButtons())
+    @staticmethod
+    def disableButtons():
+        uart.write(CreateCommand.disableButtons())
     
 
 
@@ -164,7 +167,7 @@ class CreateCommand():
         output = CreateCommand.initCommand(19,(0,0,0))
         output.append(1) #led
         return CreateCommand.endCommand(output)
-
+    
     def led(ledIndex,r,g,b):
         led = pow(2,ledIndex)
         output = bytearray()
@@ -390,12 +393,12 @@ class CreateCommand():
         output.append(17) #len
         output.append(1) #sec siempre a 1, creo que es para cuando queres mandar varios seguidos???? ni idea XD
         output.append(0) # SO
-        output.append(255) # DE
+        output.append(5) # DE
         output.append(8) #btn config command
 
-        output.append(255)
-        output.append(255)
         output.append(0)
+        output.append(0)
+        output.append(1)
         output.append(0)
 
         output.append(1)
@@ -410,16 +413,45 @@ class CreateCommand():
         output.append(3)
         return output
     @staticmethod
+    def disableButtons():
+        output = bytearray()
+        output.append(16)
+        output.append(2)
+        output.append(17) #len
+        output.append(1) #sec siempre a 1, creo que es para cuando queres mandar varios seguidos???? ni idea XD
+        output.append(0) # SO
+        output.append(5) # DE
+        output.append(8) #btn config command
+
+        output.append(0)
+        output.append(0)
+        output.append(1)
+        output.append(0)
+
+        output.append(0)
+
+        output.append(0)
+        output.append(0)
+
+        output.append(CreateCommand.calculateCrc(output[2:])) # CRC
+        output.append(16)
+        output.append(3)
+        return output
+    @staticmethod
     def poll():
         output = bytearray()
         output.append(16)
         output.append(2)
-        output.append(10) #len
+        output.append(14) #len
         output.append(1) #sec siempre a 1, creo que es para cuando queres mandar varios seguidos???? ni idea XD
         output.append(0) # SO
         output.append(255) # DE
         output.append(10) #polling command
-
+        
+        output.append(0)
+        output.append(0)
+        output.append(0)
+        output.append(0)
 
         output.append(CreateCommand.calculateCrc(output[2:])) # CRC
         output.append(16)

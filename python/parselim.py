@@ -17,7 +17,13 @@ class Parselim():
         #for element in message:
         #    print("BYTE:", element)
         print("message:", message)
-        print("COMMAND: ", Commands((message[6]).to_bytes(1, byteorder='little')).name)
+        command = Commands((message[6]).to_bytes(1, byteorder='little'))
+
+        
+        if(command == Commands.NODE_POLLING_STATUS_RESPONSE):
+            print("COMMAND: ",command.name)
+            print("button: " , message[9])
+        
         #print("LedMoment: ", LedMoment((message[8]).to_bytes(1, byteorder='little')).name)
 
 
