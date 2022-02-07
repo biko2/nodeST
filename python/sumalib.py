@@ -150,6 +150,9 @@ class Effects():
     def enableButtons():
         uart.write(CreateCommand.enableButtons())
     @staticmethod
+    def configButtons(a,b,c,d):
+        uart.write(CreateCommand.configButtons(a,b,c,d))
+    @staticmethod
     def disableButtons():
         uart.write(CreateCommand.disableButtons())
     
@@ -400,6 +403,33 @@ class CreateCommand():
         output.append(0)
         output.append(1)
         output.append(0)
+
+        output.append(1)
+
+        time_c, time_f= divmod(200, 256)
+
+        output.append(time_f)
+        output.append(time_c)
+
+        output.append(CreateCommand.calculateCrc(output[2:])) # CRC
+        output.append(16)
+        output.append(3)
+        return output
+    @staticmethod
+    def configButtons(a,b,c,d):
+        output = bytearray()
+        output.append(16)
+        output.append(2)
+        output.append(17) #len
+        output.append(1) #sec siempre a 1, creo que es para cuando queres mandar varios seguidos???? ni idea XD
+        output.append(0) # SO
+        output.append(5) # DE
+        output.append(8) #btn config command
+
+        output.append(a)
+        output.append(b)
+        output.append(c)
+        output.append(d)
 
         output.append(1)
 

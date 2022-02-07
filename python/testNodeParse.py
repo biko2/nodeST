@@ -4,6 +4,7 @@ from sumalib import Sumalib, Effects
 from sumalibColors import JADE, TEAL, GOLD,GREEN, BLUE
 import time
 
+from random import randrange
 
 DELAY = 1
 COLOR = (55,0,0)
@@ -37,7 +38,9 @@ Effects.dimmer(TEAL,1000,1000,0)
 time.sleep(1)
 Effects.dimmer(GREEN,1000,1000,0, button=True)
 print("Read mode")
-Effects.enableButtons()
+#Effects.enableButtons()
+#Effects.configButtons(0,0,1,0) #middle
+Effects.configButtons(255,255,255,255)
 #Effects.disableButtons()
 Effects.sync()
 time.sleep(0.01)
@@ -48,7 +51,7 @@ buffer = b''
 
 
 initTime = time.time()
-threshold = 1
+threshold = 0.05
 while True:
     
     while(leds.uart.inWaiting()):
@@ -59,7 +62,11 @@ while True:
         #print("buffer: ", buffer)
         #print("match: ", match)
         if(match):
-            Parselim.parse(match)
+            button = Parselim.parse(match)
+            if(button):
+                if(button == 129):
+                    Effects.buzzer(1,1,0)
+                    #Effects.buzzer(randrange(10),1,0)
 
         time.sleep(0.01)
     if(time.time() -  initTime > threshold):
