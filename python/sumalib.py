@@ -1,7 +1,14 @@
 import time
-import serial.rs485
-uart=serial.rs485.RS485(port='/dev/ttyUSB0',baudrate=115200)
-uart.rs485_mode = serial.rs485.RS485Settings(True,False)
+platform = "pc"
+
+if (platform == "pc"):
+    import serial.rs485
+    uart=serial.rs485.RS485(port='/dev/ttyUSB0',baudrate=115200)
+    uart.rs485_mode = serial.rs485.RS485Settings(True,False)
+if(platform == "rpi"):
+    import board
+    import busio
+    uart = busio.UART(tx=board.GP0, rx=board.GP1, baudrate=115200)
 
 
 #Enable buttons

@@ -20,7 +20,6 @@ leds = Sumalib()
 
 
 
-leds = Sumalib()
 leds.fill(CLEAR)
 
 
