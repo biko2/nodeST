@@ -114,7 +114,8 @@ class Effects():
     """
     @staticmethod
     def blink(numLeds, color, numBlinks, timeIn, timeOut, button=False):
-        uart.write(CreateCommand.blink(numLeds, color,numBlinks, timeIn, timeOut, button))
+        uart.write(CreateCommand.blink(numLeds, color,
+                                       numBlinks, timeIn, timeOut, button))
     """
     Rotary effect.
     :param color: color value list in (r, g ,b) format.
