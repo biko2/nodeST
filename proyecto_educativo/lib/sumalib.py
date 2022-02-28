@@ -3,8 +3,8 @@ platform = "rpi"
 
 if (platform == "pc"):
     import serial.rs485
-    uart = serial.rs485.RS485(port='/dev/ttyUSB0', baudrate=115200)
-    uart.rs485_mode = serial.rs485.RS485Settings(True, False)
+    uart = serial.rs485.rs485(port='/dev/ttyusb0', baudrate=115200)
+    uart.rs485_mode = serial.rs485.rs485settings(True, False)
 
 if (platform == "mac"):
     import serial.rs485
