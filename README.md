@@ -1,3 +1,5 @@
+![Alt text](cabecera3.png?raw=true "kodeletes")
+
 ### Repositorio del Proyecto nodeST de Sumalim
 
 En este repositorio encontrás tanto la libraría de nodeST como los ejercicios del proyecto educativo de Sumalim.
